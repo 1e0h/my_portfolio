@@ -1,6 +1,8 @@
 from flask import Flask, render_template
+from flask_frozen import Freezer
 
 app = Flask(__name__)
+freezer = Freezer(app)
 
 # 仮のプロジェクトデータ
 projects = [
@@ -8,7 +10,6 @@ projects = [
     {'id': 2, 'name': 'Project 2', 'description': 'This is the second project.', 'details': 'Detailed information about Project 2.', 'image': 'images/project2.jpg'},
     {'id': 3, 'name': 'Project 3', 'description': 'This is the third project.', 'details': 'Detailed information about Project 3.', 'image': 'images/project3.jpg'},
 ]
-
 
 @app.route('/')
 def home():
@@ -21,6 +22,12 @@ def project(project_id):
         return render_template('project.html', project=project)
     else:
         return "Project not found", 404
+
+@freezer.register_generator
+def url_generator():
+    yield 'home', {}
+    for project in projects:
+        yield 'project', {'project_id': project['id']}
 
 if __name__ == '__main__':
     app.run(debug=True)
