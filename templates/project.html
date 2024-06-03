@@ -1,7 +1,0 @@
-{% extends "base.html" %}
-{% block content %}
-<h1>{{ project.name }}</h1>
-<img src="{{ url_for('static', filename=project.image) }}" alt="{{ project.name }}">
-<p>{{ project.details }}</p>
-<a href="/">Back to Home</a>
-{% endblock %}
